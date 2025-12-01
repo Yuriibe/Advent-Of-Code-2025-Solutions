@@ -6,6 +6,7 @@ import re
 
 start = 50
 counter = 0
+
 with open("input") as f:
     for line in f:
         line = line.strip()
@@ -14,10 +15,18 @@ with open("input") as f:
             letter = m.group(1)
             number = int(m.group(2))
 
-        if letter == "R":
-            start = (start + number) % 100
-        else:
-            start = (start - number) % 100
-        if start == 0:
-            counter = counter + 1
-print(counter)
+            if letter == "R":
+                count_zeros = (start + number) // 100
+                counter += count_zeros
+                start = (start + number) % 100
+            else:
+                if start == 0:
+                    count_zeros = (number - 1) // 100
+                elif number >= start:
+                    count_zeros = (number - start) // 100 + 1
+                else:
+                    count_zeros = 0
+                counter += count_zeros
+                start = (start - number) % 100
+
+print(f"Total zero crossings: {counter}")
